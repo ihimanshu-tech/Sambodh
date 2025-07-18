@@ -1,0 +1,57 @@
+Mel-Frequency Cepstrum Coefficients (MFFC)
+Table of contents
+Introduction
+Mel-Frequency Cepstrum Coefficients Algorithm
+MFFC results
+Cats and Dogs audio classification
+Introduction
+Mel-Frequency Cepstral Coefficients (MFCC) comes from combines two analysis: Cepstral and Mel-Frequency Analysis.
+
+   1. Cepstral Analysis aims to extract envelop of signal which carries the most relevant information. It uses IFT (Inverse Fourier Transformation) and LPF (Low Pass Filter) to extract coefficient representing signal envelop of Log Power Signal Spectrum.
+
+  
+   2. Mel-Frequency Analysis treats signal as human auditory system. It passes Signal spectrum though Mel filter which estimates human auditory system filtering. Example of Mel filter is presented in the picture below.
+
+  
+
+Mel-Frequency Cepstrum Coefficients Algorithm
+MFCC algorithm is composed of 8 steps:
+
+   1. Framing - Signal is framed into chunks often with length of 20-40ms
+   2. Windowing - Frames are windowed with Hamming window
+   
+   3. Calculating Power Spectrum of each frame
+   
+   4. Filtering each Power Spectrum with Mel filter
+   5. Covert Mel Spectrum from amplitude to dB
+   6. Using DCT2 transformation on each Mel Spectrum
+   
+   7. Liftering of MFCC using sin window
+   
+   8. Taking 2. - 13 coefficient
+
+Details of implementation can be found in scipts ./core_functions/mffc_feature_extraction.py and ./core_functions/mffc_utility_functions.py.
+
+MFFC results
+Algorithm results are compared to mfcc extraction algorithm from librosa package. One representative signal (cat audio sample) is used as input signal and Spectrograms and MFFCs are generated using both algorithms (implemented one and librosa). Results, generated using script ./main_scrips/compare_impl_vs_librosa_mffc.py, are shown below.
+
+   - Input signal
+   
+
+   - Spectrograms
+       
+
+   - MFCCs
+       
+
+Cats and Dogs audio classification
+The classification of Cats and Dogs audio dataset are preformed using implemented MFCCs extraction algorithm for feature extraction. Implementation can be found in script ./main_scrips/cats_and_dog_classification.py. Data used for training and testing the classifier can be found in folder ./data/. Classification is performed using next steps:
+   1. Load train and test data
+   2. Pad data to same length
+   3. Extract MFFC from data
+   4. Reduce dimensionality with PCA to 30 components
+   5. Train and test LogisticRegression classifier
+
+Classifier reached 93% accuracy on train and test data. Confusion matrices are presented below:
+
+  
